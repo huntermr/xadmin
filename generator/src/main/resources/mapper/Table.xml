@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.generator.mapper.TableMapper">
+
+    <resultMap type="com.xadmin.generator.entity.TableInfo" id="TableInfoResult">
+        <id     property="tableName"      column="table_name"      />
+        <result property="tableComment"   column="table_comment"   />
+        <result property="createTime"     column="create_time"     />
+        <result property="updateTime"     column="update_time"     />
+    </resultMap>
+
+    <sql id="selectGenVo">
+        select table_name, table_comment, create_time, update_time from information_schema.tables
+    </sql>
+
+    <select id="selectTableList" parameterType="com.xadmin.generator.entity.TableInfo" resultMap="TableInfoResult">
+        <include refid="selectGenVo"/>
+        where table_comment <![CDATA[ <> ]]> '' and table_schema = (select database())
+        <if test="tableName != null and tableName != ''">
+            AND table_name like concat('%', #{tableName}, '%')
+        </if>
+        <if test="tableComment != null and tableComment != ''">
+            AND table_comment like concat('%', #{tableComment}, '%')
+        </if>
+    </select>
+
+</mapper>

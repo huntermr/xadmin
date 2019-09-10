@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.Role">
+        <id column="role_id" property="roleId" />
+        <result column="role_name" property="roleName" />
+        <result column="role_key" property="roleKey" />
+        <result column="role_desc" property="roleDesc" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        role_id, role_name, role_key, role_desc, ct, ut, is_del, version
+    </sql>
+
+    <sql id="User_Role_Column_List">
+        r.role_id, r.role_name, r.role_key, r.role_desc, r.ct, r.ut
+    </sql>
+
+    <select id="getUserRoles" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="User_Role_Column_List"/>
+        from core_role r
+        left join core_user_role_mapping urm on urm.role_id = r.role_id
+        where r.is_del = 0
+        and urm.user_id = #{userId}
+    </select>
+
+    <select id="getUserRoleIds" resultType="java.lang.Long">
+        select
+        r.role_id
+        from core_role r
+        left join core_user_role_mapping urm on urm.role_id = r.role_id
+        where r.is_del = 0
+        and urm.user_id = #{userId}
+    </select>
+
+    <select id="getGroupRoles" parameterType="list"
+            resultMap="BaseResultMap">
+        select
+        <include refid="User_Role_Column_List"/>
+        from core_role r
+        where r.is_del = 0
+        and r.role_id in (select distinct role_id from core_user_group_role_mapping where group_id in
+        <foreach collection="groupIds" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+    <select id="getRoles" parameterType="com.xadmin.support.core.vo.request.RoleFilterVo"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from core_role
+        where is_del = 0
+        <if test="param.roleNameKeyword != null">
+            <bind name="pattern" value="'%' + param.roleNameKeyword + '%'"/>
+            and role_name like #{pattern}
+        </if>
+    </select>
+
+</mapper>

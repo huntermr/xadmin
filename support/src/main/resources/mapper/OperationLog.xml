@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.OperationLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.OperationLog">
+        <id column="log_id" property="logId" />
+        <result column="user_id" property="userId" />
+        <result column="username" property="username" />
+        <result column="operation_content" property="operationContent" />
+        <result column="operation_time" property="operationTime" />
+        <result column="operation_ip" property="operationIp" />
+        <result column="operation_uri" property="operationUri" />
+        <result column="operation_method" property="operationMethod" />
+        <result column="operation_type" property="operationType" />
+        <result column="operation_params" property="operationParams" />
+        <result column="operation_device" property="operationDevice" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        log_id, user_id, username, operation_content, operation_time, operation_ip, operation_uri, operation_method, operation_type, operation_params, operation_device, ct, ut, is_del, version
+    </sql>
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.SystemNoticeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.SystemNotice">
+        <id column="notice_id" property="noticeId" />
+        <result column="notice_title" property="noticeTitle" />
+        <result column="sort" property="sort" />
+        <result column="notice_content" property="noticeContent" />
+        <result column="publish_id" property="publishId" />
+        <result column="publish_name" property="publishName" />
+        <result column="publish_time" property="publishTime" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        notice_id, notice_title, sort, notice_content, publish_id, publish_name, publish_time, ct, ut, is_del, version
+    </sql>
+
+</mapper>

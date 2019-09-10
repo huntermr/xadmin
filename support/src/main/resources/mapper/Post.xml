@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.PostMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.Post">
+        <id column="post_id" property="postId" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+        <result column="post_sort" property="postSort" />
+        <result column="remark" property="remark" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        post_id, post_code, post_name, post_sort, remark, ct, ut, is_del, version
+    </sql>
+
+    <sql id="User_Post_Column_List">
+        p.post_id, p.post_code, p.post_name, p.post_sort, p.remark, p.ct, p.ut
+    </sql>
+
+    <select id="getUserPosts" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="User_Post_Column_List"/>
+        from core_post p
+        left join core_user_post_mapping upd on upd.post_id = p.post_id
+        where p.is_del = 0
+        and upd.user_id = #{userId}
+    </select>
+
+</mapper>

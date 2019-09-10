@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.UserGroupMappingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.UserGroupMapping">
+        <id column="mapping_id" property="mappingId" />
+        <result column="group_id" property="groupId" />
+        <result column="user_id" property="userId" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        mapping_id, group_id, user_id, ct, ut, is_del, version
+    </sql>
+
+</mapper>

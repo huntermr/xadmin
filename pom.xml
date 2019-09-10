@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xadmin</groupId>
+    <artifactId>xadmin</artifactId>
+    <version>F1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <druid.starter.version>1.1.10</druid.starter.version>
+        <fastjson.version>1.2.58</fastjson.version>
+        <jwt.version>0.9.0</jwt.version>
+        <junit.version>4.12</junit.version>
+        <apache.commons.collections.version>3.2.2</apache.commons.collections.version>
+        <apache.commons.io.version>2.6</apache.commons.io.version>
+        <apache.commons.codec.version>1.11</apache.commons.codec.version>
+        <apache.commons.beanutils.version>1.9.3</apache.commons.beanutils.version>
+        <commons-lang.version>2.6</commons-lang.version>
+
+        <quartz.version>2.3.0</quartz.version>
+        <quartz-jobs.version>2.3.0</quartz-jobs.version>
+
+        <swagger.version>2.8.0</swagger.version>
+        <aliyun.oss.version>2.8.3</aliyun.oss.version>
+
+        <!--Mybatis-Plus相关版本-->
+        <mybatisplus.spring.boot.starter.version>3.0.6</mybatisplus.spring.boot.starter.version>
+
+        <shiro.version>1.4.0</shiro.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <filters.base.path>src/filters</filters.base.path>
+        <!--Maven私服地址-->
+        <maven.nexus.releases.url>http://10.10.10.21:8081/repository/maven-releases/</maven.nexus.releases.url>
+        <maven.nexus.snapshots.url>http://10.10.10.21:8081/repository/maven-snapshots/</maven.nexus.snapshots.url>
+    </properties>
+
+    <modules>
+        <module>framework</module>
+        <module>common</module>
+        <module>env</module>
+        <module>generator</module>
+        <module>support</module>
+        <module>admin</module>
+        <module>quartz</module>
+        <module>auth</module>
+    </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.2.RELEASE</version>
+    </parent>
+
+    <dependencies>
+        <!-- 基础 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+
+        <!-- 高版本jdk(大于jdk8)需要以下依赖-->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+        <!--maven上传配置 start-->
+        <profile>
+            <id>deploy</id>
+            <properties>
+                <profile-id>deploy</profile-id>
+            </properties>
+            <distributionManagement>
+                <repository>
+                    <id>releases</id>
+                    <name>Releases</name>
+                    <url>${maven.nexus.releases.url}</url>
+                </repository>
+                <snapshotRepository>
+                    <id>snapshot</id>
+                    <name>Snapshot</name>
+                    <url>${maven.nexus.snapshots.url}</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <!--maven上传配置 end-->
+    </profiles>
+
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>static/admin/layui/font/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>static/admin/layui/font/**</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+    </build>
+
+</project>

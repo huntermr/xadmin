@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.ArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.Article">
+        <id column="article_id" property="articleId" />
+        <result column="article_title" property="articleTitle" />
+        <result column="article_category_id" property="articleCategoryId" />
+        <result column="type" property="type" />
+        <result column="publish_time" property="publishTime" />
+        <result column="author_id" property="authorId" />
+        <result column="author_name" property="authorName" />
+        <result column="read_count" property="readCount" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        article_id, article_title, article_category_id, type, publish_time, author_id, author_name, read_count, ct, ut, is_del, version
+    </sql>
+
+    <select id="getArticleList"
+            parameterType="com.xadmin.support.core.vo.request.ArticleFilterVo"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from core_article
+        where is_del= 0
+        <if test="param.keyword != null">
+            <bind name="pattern" value="'%' + param.keyword + '%'" />
+            and article_title like #{pattern}
+        </if>
+        <if test="param.allCateIds != null and param.allCateIds.size() > 0">
+            and article_category_id in
+            <foreach collection="param.allCateIds" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+</mapper>

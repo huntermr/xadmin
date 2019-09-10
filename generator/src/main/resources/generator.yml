@@ -1,0 +1,22 @@
+gen:
+  author: Ht
+  apiVersion: v1
+
+  outputPath: F://xadmin-mp
+  mapperPath: F://xadmin-mp/resources/
+  vuePath: F://xadmin-mp/vue/
+  sqlPath: F://xadmin-mp/sql/
+
+  dbUser: root
+  dbPwd: 123456
+  dbUrl: jdbc:mysql://localhost:3306/xadmin?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+
+  packageName: com.xadmin.support
+  packagePath: com/xadmin/support
+  commonPackageName: com.xadmin.framework.base
+  moduleName: core
+
+  tablePrefix: core_
+  tableInclude: core_user, core_role
+  tableExclude: core_user
+

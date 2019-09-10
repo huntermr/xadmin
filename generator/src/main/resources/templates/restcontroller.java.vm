@@ -1,0 +1,33 @@
+package ${package.Controller};
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RestController;
+import com.xadmin.framework.base.BaseRestController;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+
+/**
+ * <p>
+ * $!{table.comment} Restful Api 控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@RestController
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+    #if(${superControllerClass})
+    public class Rest${table.controllerName} extends BaseRestController<${table.serviceName}, ${entity}> {
+    #else
+    public class Rest${table.controllerName} {
+    #end
+
+}
+
+#end

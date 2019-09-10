@@ -1,0 +1,13 @@
+INSERT INTO `core_resource` (`resource_name`, `resource_type`, `resource_key`, `resource_uri`, `resource_redirect`, `resource_view`, `resource_icon`, `resource_perms`, `resource_level`, `parent_resource_id`)
+VALUES ('$!{table.comment}', 'M', '${entity.toLowerCase()}', '/${entity.toLowerCase()}', NULL, '${entity.toLowerCase()}/${entity}View', NULL, '${entity.toLowerCase()}:view', 2, 9);
+
+SELECT @parentId := LAST_INSERT_ID();
+
+INSERT INTO `core_resource` (`resource_name`, `resource_type`, `resource_key`, `resource_uri`, `resource_redirect`, `resource_view`, `resource_icon`, `resource_perms`, `resource_level`, `parent_resource_id`)
+VALUES ('$!{table.comment}新增', 'O', 'add', NULL, NULL, NULL, NULL, '${entity.toLowerCase()}:add', 3, @parentId);
+INSERT INTO `core_resource` (`resource_name`, `resource_type`, `resource_key`, `resource_uri`, `resource_redirect`, `resource_view`, `resource_icon`, `resource_perms`, `resource_level`, `parent_resource_id`)
+VALUES ('$!{table.comment}删除', 'O', 'del', NULL, NULL, NULL, NULL, '${entity.toLowerCase()}:del', 3, @parentId);
+INSERT INTO `core_resource` (`resource_name`, `resource_type`, `resource_key`, `resource_uri`, `resource_redirect`, `resource_view`, `resource_icon`, `resource_perms`, `resource_level`, `parent_resource_id`)
+VALUES ('$!{table.comment}修改', 'O', 'edit', NULL, NULL, NULL, NULL, '${entity.toLowerCase()}:edit', 3, @parentId);
+INSERT INTO `core_resource` (`resource_name`, `resource_type`, `resource_key`, `resource_uri`, `resource_redirect`, `resource_view`, `resource_icon`, `resource_perms`, `resource_level`, `parent_resource_id`)
+VALUES ('$!{table.comment}查询', 'O', 'get', NULL, NULL, NULL, NULL, '${entity.toLowerCase()}:get', 3, @parentId);

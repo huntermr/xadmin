@@ -1,0 +1,2 @@
+auth:
+  anonurl: /webjars/**, /swagger-resources/**, /swagger-ui.html, /error, /v2/api-docs, /v1/user/login

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.ArticleCategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.ArticleCategory">
+        <id column="article_category_id" property="articleCategoryId" />
+        <result column="article_category_name" property="articleCategoryName" />
+        <result column="parent_category_id" property="parentCategoryId" />
+        <result column="category_level" property="categoryLevel" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        article_category_id, article_category_name, parent_category_id, category_level, ct, ut, is_del, version
+    </sql>
+
+</mapper>

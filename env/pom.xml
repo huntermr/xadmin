@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>env</artifactId>
+    <packaging>pom</packaging>
+
+    <parent>
+        <artifactId>xadmin</artifactId>
+        <groupId>com.xadmin</groupId>
+        <version>F1.0-SNAPSHOT</version>
+    </parent>
+
+    <profiles>
+        <!--多环境配置 start-->
+        <!-- 开发环境 -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profile-id>dev</profile-id>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <filters>
+                    <filter>${filters.base.path}/${profile-id}-filter.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <!-- 测试环境 -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <profile-id>test</profile-id>
+            </properties>
+            <build>
+                <filters>
+                    <filter>${filters.base.path}/${profile-id}-filter.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <!-- UAT环境 -->
+        <profile>
+            <id>uat</id>
+            <properties>
+                <profile-id>uat</profile-id>
+            </properties>
+            <build>
+                <filters>
+                    <filter>${filters.base.path}/${profile-id}-filter.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <!-- 生产环境 -->
+        <profile>
+            <id>prd</id>
+            <properties>
+                <profile-id>prd</profile-id>
+            </properties>
+            <build>
+                <filters>
+                    <filter>${filters.base.path}/${profile-id}-filter.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <!--多环境配置 end-->
+    </profiles>
+
+    <build>
+        <plugins>
+            <!--maven插件(多环境需要用到)-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <useDefaultDelimiters>true</useDefaultDelimiters>
+                    <delimiters>
+                        <delimiter>$[*]</delimiter>
+                    </delimiters>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

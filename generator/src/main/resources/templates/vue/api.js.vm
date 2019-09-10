@@ -1,0 +1,59 @@
+import { axios } from '@/utils/request'
+
+const moudulePath = '/v1/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end'
+
+const api = {
+  ${entity.toLowerCase()}List: moudulePath + '/page',
+  ${entity.toLowerCase()}All: moudulePath + '/all',
+  add${entity}: moudulePath
+}
+
+export default api
+
+export function get${entity}List (parameter) {
+  return axios({
+    url: api.${entity.toLowerCase()}List,
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function get${entity}All (parameter) {
+  return axios({
+    url: api.${entity.toLowerCase()}All,
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function get${entity}Info (#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end) {
+  return axios({
+    url: moudulePath + '/' + #foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end,
+    method: 'get'
+  })
+}
+
+export function add${entity} (parameter) {
+  return axios({
+    url: api.add${entity},
+    method: 'post',
+    params: parameter
+  })
+}
+
+export function edit${entity} (parameter) {
+  console.log('parameter', parameter)
+  return axios({
+    url: moudulePath,
+    method: 'put',
+    params: parameter
+  })
+}
+
+export function del${entity} (#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end) {
+  console.log('#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end', #foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end)
+  return axios({
+    url: moudulePath + '/' + #foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end,
+    method: 'delete'
+  })
+}

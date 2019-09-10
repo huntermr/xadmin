@@ -1,0 +1,79 @@
+server:
+  port: $[server.port]
+  tomcat:
+      max-threads: 10
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 30MB
+  application:
+    name: $[server.name]
+  devtools:
+    restart:
+      enabled: true
+    additional-paths: resources/**,static/**,templates/**
+  thymeleaf:
+    cache: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+      # 使用阿里的Druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 填写你数据库的url、登录名、密码和数据库名
+    url: $[datasource.url]
+    username: $[datasource.username]
+    password: $[datasource.password]
+    druid:
+      # 连接池的配置信息
+      # 初始连接数
+      initialSize: 5
+      # 最小连接池数量
+      minIdle: 10
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /tool/datasource/*
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+  redis:
+    host: 10.10.10.22
+    port: 6379
+    password:
+
+mybatis-plus:
+  mapper-locations: $[mybatis.mapper-locations]
+  typeAliasesPackage: $[mybatis.type-aliases-package]
+
+app:
+  swagger:
+    enable: true
+  jwt:
+    key: XAdminWeb2018*+-.@#!^
+    content: X-Admin Server Token
+    timeout: 86400000
+    token:
+      rediskey: user_%s_token_%s

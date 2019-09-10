@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.DeptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.Dept">
+        <id column="dept_id" property="deptId" />
+        <result column="parent_id" property="parentId" />
+        <result column="dept_name" property="deptName" />
+        <result column="order_num" property="orderNum" />
+        <result column="leader" property="leader" />
+        <result column="level" property="level" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        dept_id, parent_id, dept_name, order_num, leader, level, phone, email, ct, ut, is_del, version
+    </sql>
+
+    <sql id="User_Dept_Column_List">
+        d.dept_id, d.parent_id, d.dept_name, d.order_num, d.leader, d.level, d.phone, d.email, d.ct, d.ut
+    </sql>
+
+    <select id="getUserDepts" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="User_Dept_Column_List"/>
+        from core_dept d
+        left join core_user_dept_mapping urd on urd.dept_id = d.dept_id
+        where d.is_del = 0
+        and urd.user_id = #{userId}
+    </select>
+
+</mapper>

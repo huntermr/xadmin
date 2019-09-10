@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xadmin.support.core.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xadmin.support.core.entity.User">
+        <id column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="password" property="password" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="city" property="city" />
+        <result column="join_time" property="joinTime" />
+        <result column="last_login" property="lastLogin" />
+        <result column="user_status" property="userStatus" />
+        <result column="ct" property="ct" />
+        <result column="ut" property="ut" />
+        <result column="is_del" property="isDel" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, user_name, password, mobile, email, city, join_time, last_login, user_status, ct, ut, is_del, version
+    </sql>
+
+    <select id="findByUserName" parameterType="java.lang.String" resultType="com.xadmin.support.core.entity.User">
+        select
+        <include refid="Base_Column_List" />
+        from core_user
+        where is_del= 0
+        and user_name = #{userName}
+    </select>
+
+    <select id="getUserList" parameterType="com.xadmin.support.core.vo.request.UserFilterVo" resultType="com.xadmin.support.core.vo.response.UserResponseVo">
+        select
+        <include refid="Base_Column_List" />
+        from core_user
+        where is_del= 0
+        <if test="param.userNameKeyword != null">
+            <bind name="pattern" value="'%' + param.userNameKeyword + '%'" />
+            and user_name like #{pattern}
+        </if>
+        <if test="param.roleId != null">
+            and user_id in (select distinct user_id from core_user_role_mapping where role_id = #{param.roleId})
+        </if>
+        <if test="param.groupId != null">
+            and user_id in (select distinct user_id from core_user_group_mapping where group_id = #{param.groupId})
+        </if>
+        <if test="param.allDeptIds != null and param.allDeptIds.size() > 0">
+            and user_id in (select distinct user_id from core_user_dept_mapping where dept_id in
+            <foreach collection="param.allDeptIds" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+            )
+        </if>
+    </select>
+
+    <select id="getUserByGroupId" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from core_user u
+        where u.is_del = 0
+        and u.user_id in (select distinct user_id from core_user_group_mapping where group_id = #{groupId})
+    </select>
+
+</mapper>

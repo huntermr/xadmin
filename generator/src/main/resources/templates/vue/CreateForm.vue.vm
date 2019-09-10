@@ -1,0 +1,102 @@
+<template>
+  <a-modal
+    :title="title"
+    :width="640"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    @ok="handleSubmit"
+    @cancel="handleCancel"
+  >
+    <a-spin :spinning="confirmLoading">
+      <a-form :form="form">
+      #foreach($field in ${table.fields})
+        #if(${field.keyFlag})
+        <a-form-item><a-input type="hidden" v-decorator="['${field.propertyName}', {rules: [{required: false}]}]" /></a-form-item>
+        #else
+            #if(!${field.fill})
+            #if(${versionFieldName}!=${field.name})
+            #if(${logicDeleteFieldName}!=${field.name})
+        <a-form-item
+          label="#if($!field.comment != "")${field.comment}#else'未知字段'#end"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol">
+          <a-input v-decorator="['${field.propertyName}', {rules: [{required: false}]}]" />
+        </a-form-item>
+
+            #end
+            #end
+            #end
+        #end
+      #end
+      </a-form>
+    </a-spin>
+  </a-modal>
+</template>
+
+<script>
+
+import AFormItem from 'ant-design-vue/es/form/FormItem'
+import { get${entity}Info } from '@/api/${entity.toLowerCase()}'
+
+export default {
+  components: { AFormItem },
+  data () {
+    return {
+      labelCol: {
+        xs: { span: 12 },
+        sm: { span: 7 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 13 }
+      },
+      visible: false,
+      confirmLoading: false,
+      title: ''
+    }
+  },
+  beforeCreate () {
+    this.form = this.$form.createForm(this)
+  },
+  methods: {
+    add () {
+      this.title = '新建$!{table.comment}'
+      this.visible = true
+    },
+    edit (record) {
+      this.title = '编辑$!{table.comment}'
+      this.visible = true
+
+      get${entity}Info(record.#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end).then(res => {
+        const data = res.data
+        this.form.setFieldsValue({ ...data })
+      })
+    },
+    handleSubmit () {
+      const { form: { validateFields } } = this
+      this.confirmLoading = true
+      validateFields((errors, values) => {
+        if (!errors) {
+          console.log('values', values)
+          setTimeout(() => {
+            this.visible = false
+            this.confirmLoading = false
+            if (values.#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end) {
+              this.$emit('edit', values)
+            } else {
+              this.$emit('add', values)
+            }
+            this.form.resetFields()
+          }, 500)
+        } else {
+          this.confirmLoading = false
+        }
+      })
+    },
+    handleCancel () {
+      this.visible = false
+      this.form.resetFields()
+    }
+  }
+}
+</script>
